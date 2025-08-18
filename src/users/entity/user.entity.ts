@@ -1,33 +1,43 @@
 import { Comment } from "src/comment/entity/comment.entity";
 import { Post } from "src/post/entity/post.entity";
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    OneToMany,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn,
+} from "typeorm";
 
-@Entity({ schema: 'blog', name: 'users' })
+@Entity({ schema: "blog", name: "users" })
 export class User {
     @PrimaryGeneratedColumn()
-    id: number
+    id: number;
 
     @Column({ length: 50 })
-    name: string
+    name: string;
 
     @Column({ unique: true })
-    email: string
+    email: string;
+
+    @Column({ unique: true })
+    workEmail: string;
 
     @Column()
-    password: string
+    password: string;
 
     @Column({ default: true })
-    isActive: boolean
+    isActive: boolean;
 
-    @CreateDateColumn({ name: 'created_at' })
+    @CreateDateColumn({ name: "created_at" })
     createAt: Date;
 
-    @UpdateDateColumn({ name: 'updated_at' })
+    @UpdateDateColumn({ name: "updated_at" })
     updatedAt: Date;
 
     @OneToMany(() => Post, (post) => post.author)
-    posts: Post[]
+    posts: Post[];
 
-    @OneToMany(() => Comment, comment => comment.userId)
+    @OneToMany(() => Comment, (comment) => comment.user)
     comments: Comment[];
 }

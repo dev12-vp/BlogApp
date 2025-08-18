@@ -11,7 +11,8 @@ export const getTypeOrmConfig = (configService: ConfigService): TypeOrmModuleOpt
     username: configService.get<string>('DB_USERNAME'),
     password: configService.get<string>('DB_PASSWORD'),
     database: configService.get<string>('DB_NAME'),
-    entities: [User, Post , Comment],
+    entities: [User, Post, Comment],
     synchronize: false,
+    autoLoadEntities: false,
     logging: true
 });
