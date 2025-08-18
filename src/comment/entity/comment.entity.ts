@@ -1,26 +1,32 @@
 import { Post } from "src/post/entity/post.entity";
 import { User } from "src/users/entity/user.entity";
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 
-@Entity({ schema: 'blog', name: 'comments' })
+@Entity({ schema: "blog", name: "comments" })
 export class Comment {
-    @PrimaryGeneratedColumn()
-    id: number
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({ type: 'text' })
-    content: string
+  @Column({ type: "text" })
+  content: string;
 
-    @Column()
-    userId: number
+  @Column()
+  userId: number;
 
-    @Column()
-    postId: number
+  @Column()
+  postId: number;
 
-    @ManyToOne(() => User, user => user.comments)
-    @JoinColumn({ name: 'userId' })
-    user : User
+  @ManyToOne(() => User, (user) => user.comments)
+  @JoinColumn({ name: "userId" })
+  user: User;
 
-    @ManyToOne(() => Post, post => post.comments)
-    @JoinColumn({ name: 'postId' })
-    post : Post
+  @ManyToOne(() => Post, (post) => post.comments)
+  @JoinColumn({ name: "postId" })
+  post: Post;
 }
