@@ -1,7 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
+import { Comment } from 'src/comment/entity/comment.entity';
 import { MailService } from 'src/mail/mail.service';
+import { Post } from 'src/post/entity/post.entity';
 import { User } from 'src/users/entity/user.entity';
+import { UsersService } from 'src/users/users.service';
 
 //Wildcard Events let you listen to multiple events with a single handler by using * in the event name.
 /**
@@ -37,5 +40,19 @@ export class NotificationService {
     @OnEvent('user.create')
     async logUserCreated(user: User) {
         this.logger.log(`User created event received for ID ${user.id}`)
+    }
+
+    @OnEvent('create.comment')
+    async handleCreateComment(post: Post) {
+        const userEmail = post.author?.email
+        const userName = post.author?.name
+        this.logger.log(`Sending email to ${userEmail}`)
+
+        await this.mailService.mailSend(
+            userEmail,
+            '🎉 New Comment in your post!',
+            `Hi ${userName}, You have received new comment in your post! 🚀 , Please check the new comment 🎉`,
+
+        )
     }
 }
