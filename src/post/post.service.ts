@@ -13,11 +13,11 @@ export class PostService {
         private readonly postRepository: Repository<Post>,
     ) { }
 
-    async findAll(page = 1 , limit = 10, search?: string, order: 'ASC' | 'DESC' = 'DESC') {
+    async findAll(page = 1, limit = 10, search?: string, order: 'ASC' | 'DESC' = 'DESC') {
         try {
             const skip = (page - 1) * limit;
-console.log('page', page)
-console.log('limit', limit)
+            console.log('page', page)
+            console.log('limit', limit)
             const [data, total] = await this.postRepository.findAndCount(
                 {
                     where: search ? { title: ILike(`%${search}%`) } : {},
@@ -56,7 +56,7 @@ console.log('limit', limit)
             // if(!id){
             //    throw new BadRequestException('Please pass id')
             // }
-            const postData = await this.postRepository.findOne({ where: { id } })
+            const postData = await this.postRepository.findOne({ where: { id }, relations: ['author'], })
             console.log('postData', postData)
             if (!postData) throw new NotFoundException(`Post with id ${id} not found!`);
             return postData;
@@ -69,7 +69,7 @@ console.log('limit', limit)
 
     async deleteOne(id: number) {
         try {
-            if(!id){
+            if (!id) {
                 throw new BadRequestException('Please pass id')
             }
             const deletePost = await this.postRepository.delete(id)
